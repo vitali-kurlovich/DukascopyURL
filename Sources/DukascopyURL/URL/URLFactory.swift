@@ -53,7 +53,8 @@ extension URLFactory {
         let upperComps = calendar.dateComponents([.year, .month, .day, .hour], from: range.upperBound)
 
         guard let lower = calendar.date(from: lowerComps),
-            let upper = calendar.date(from: upperComps) else {
+            let upper = calendar.date(from: upperComps)
+        else {
             throw FactoryError.invalidDateRange
         }
 
