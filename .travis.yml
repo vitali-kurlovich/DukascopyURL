@@ -6,7 +6,7 @@ env:
   global:
   - SWIFT_BRANCH=swift-5.3.1-release
   - SWIFT_VERSION=swift-5.3.1-RELEASE
-  - CODECOV_TOKEN="25b1a9a2-a79e-4f50-970d-bc369de5584d"
+  - CODECOV_TOKEN="9870d13b-a26f-4f5c-a35f-99e85db6fb48"
   - PACKAGE_VERSION=0.0.1
 jobs:
   include:
