@@ -15,15 +15,8 @@ import Foundation
 
 public
 struct URLFactory {
-    public enum PriceType {
-        case ask
-        case bid
-    }
-
-    public enum Format {
-        case ticks
-        case candles(PriceType)
-    }
+    public typealias PriceType = DukascopyPriceType
+    public typealias Format = DukascopyFormat
 
     public
     enum FactoryError: Error {
@@ -34,7 +27,7 @@ struct URLFactory {
         case invalidDateRange
     }
 
-    private let baseUrl: String
+    public let baseUrl: String
 
     public
     init(_ baseUrl: String = "https://datafeed.dukascopy.com/datafeed") {
