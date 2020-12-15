@@ -13,6 +13,22 @@ import Foundation
  https://datafeed.dukascopy.com/datafeed/ACFREUR/2020/03/18/09h_ticks.bi5
  */
 
+/*
+
+ func infoRequest() -> URLRequest {
+     let base = "https://freeserv.dukascopy.com/2.0/index.php?path=common%2Finstruments&json"
+     let url = URL(string: base)!
+
+     var request = URLRequest(url: url, cachePolicy: cachePolicy, timeoutInterval: timeout)
+
+     request.setValue("freeserv.dukascopy.com", forHTTPHeaderField: "Authority")
+     request.setValue("https://freeserv.dukascopy.com/", forHTTPHeaderField: "Referer")
+
+     return request
+ }
+
+ */
+
 public
 struct URLFactory {
     public typealias PriceType = DukascopyPriceType
@@ -27,11 +43,22 @@ struct URLFactory {
         case invalidDateRange
     }
 
-    public let baseUrl: String
+    private let baseUrl: String
+    private let infoUrl: String
 
     public
-    init(_ baseUrl: String = "https://datafeed.dukascopy.com/datafeed") {
+    init(_ baseUrl: String = "https://datafeed.dukascopy.com/datafeed", infoUrl: String = "https://freeserv.dukascopy.com/2.0") {
         self.baseUrl = baseUrl
+        self.infoUrl = infoUrl
+    }
+}
+
+public
+extension URLFactory {
+    func infoURL() -> URL {
+        let string = infoUrl + "/index.php?path=common%2Finstruments&json"
+        let url = URL(string: string)!
+        return url
     }
 }
 
