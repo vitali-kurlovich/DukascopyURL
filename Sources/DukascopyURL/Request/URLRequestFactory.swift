@@ -18,6 +18,7 @@ struct URLRequestFactory {
     public typealias PriceType = DukascopyPriceType
     public typealias Format = DukascopyFormat
 
+    public
     init(urlFactory: URLFactory = URLFactory()) {
         self.urlFactory = urlFactory
     }
