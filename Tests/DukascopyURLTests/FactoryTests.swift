@@ -112,9 +112,18 @@ final class FactoryTests: XCTestCase {
         }
     }
 
+    func testURLFactoryInfo() {
+        let factory = URLRequestFactory()
+        let reauest = factory.infoRequest()
+
+        XCTAssertNotNil(reauest.value(forHTTPHeaderField: "Authority"))
+        XCTAssertNotNil(reauest.value(forHTTPHeaderField: "Referer"))
+    }
+
     static var allTests = [
         ("testURLFactory", testURLFactory),
         ("testURLFactoryCandles", testURLFactoryCandles),
         ("testURLFactoryErrors", testURLFactoryErrors),
+        ("testURLFactoryInfo", testURLFactoryInfo),
     ]
 }

@@ -62,8 +62,7 @@ extension URLFactory {
     }
 }
 
-extension URLFactory {
-    public
+public extension URLFactory {
     func url(format: Format, for currency: String, range: Range<Date>) throws -> [(url: URL, range: Range<Date>)] {
         guard !currency.isEmpty else {
             throw FactoryError.invalidCurrency
@@ -73,7 +72,7 @@ extension URLFactory {
         let upperComps = calendar.dateComponents([.year, .month, .day, .hour], from: range.upperBound)
 
         guard let lower = calendar.date(from: lowerComps),
-            let upper = calendar.date(from: upperComps)
+              let upper = calendar.date(from: upperComps)
         else {
             throw FactoryError.invalidDateRange
         }
@@ -127,14 +126,12 @@ extension URLFactory {
         return urls
     }
 
-    public
     func url(format: Format, for currency: String, date: Date) throws -> URL {
         let comps = calendar.dateComponents([.year, .month, .day, .hour], from: date)
 
         return try url(format: format, for: currency, year: comps.year!, month: comps.month!, day: comps.day!, hour: comps.hour!)
     }
 
-    public
     func url(format: Format, for currency: String, year: Int, month: Int, day: Int, hour: Int = 0) throws -> URL {
         guard (1 ... 12).contains(month) else {
             throw FactoryError.invalidMonth
