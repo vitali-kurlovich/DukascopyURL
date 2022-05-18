@@ -29,7 +29,7 @@ extension URLRequestFactory {
     func request(cachePolicy: URLRequest.CachePolicy, timeout: TimeInterval, format: Format, for currency: String, range: Range<Date>) throws -> [(request: URLRequest, range: Range<Date>)] {
         let urls = try urlFactory.url(format: format, for: currency, range: range)
 
-        return urls.compactMap { (data) -> (request: URLRequest, range: Range<Date>)? in
+        return urls.compactMap { data -> (request: URLRequest, range: Range<Date>)? in
             let request = URLRequest(url: data.url, cachePolicy: cachePolicy, timeoutInterval: timeout)
             return (request: request, range: data.range)
         }
@@ -38,7 +38,7 @@ extension URLRequestFactory {
     func request(cachePolicy: URLRequest.CachePolicy, format: Format, for currency: String, range: Range<Date>) throws -> [(request: URLRequest, range: Range<Date>)] {
         let urls = try urlFactory.url(format: format, for: currency, range: range)
 
-        return urls.compactMap { (data) -> (request: URLRequest, range: Range<Date>)? in
+        return urls.compactMap { data -> (request: URLRequest, range: Range<Date>)? in
             let request = URLRequest(url: data.url, cachePolicy: cachePolicy)
             return (request: request, range: data.range)
         }
@@ -47,7 +47,7 @@ extension URLRequestFactory {
     func request(timeout: TimeInterval, format: Format, for currency: String, range: Range<Date>) throws -> [(request: URLRequest, range: Range<Date>)] {
         let urls = try urlFactory.url(format: format, for: currency, range: range)
 
-        return urls.compactMap { (data) -> (request: URLRequest, range: Range<Date>)? in
+        return urls.compactMap { data -> (request: URLRequest, range: Range<Date>)? in
             let request = URLRequest(url: data.url, timeoutInterval: timeout)
             return (request: request, range: data.range)
         }
@@ -56,7 +56,7 @@ extension URLRequestFactory {
     func request(format: Format, for currency: String, range: Range<Date>) throws -> [(request: URLRequest, range: Range<Date>)] {
         let urls = try urlFactory.url(format: format, for: currency, range: range)
 
-        return urls.compactMap { (data) -> (request: URLRequest, range: Range<Date>)? in
+        return urls.compactMap { data -> (request: URLRequest, range: Range<Date>)? in
             let request = URLRequest(url: data.url)
             return (request: request, range: data.range)
         }
