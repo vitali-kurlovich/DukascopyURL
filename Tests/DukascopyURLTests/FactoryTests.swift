@@ -1,7 +1,4 @@
 //
-//  File.swift
-//
-//
 //  Created by Vitali Kurlovich on 4/4/20.
 //
 
@@ -119,11 +116,4 @@ final class FactoryTests: XCTestCase {
         XCTAssertNotNil(request.value(forHTTPHeaderField: "Authority"))
         XCTAssertNotNil(request.value(forHTTPHeaderField: "Referer"))
     }
-
-    static var allTests = [
-        ("testURLFactory", testURLFactory),
-        ("testURLFactoryCandles", testURLFactoryCandles),
-        ("testURLFactoryErrors", testURLFactoryErrors),
-        ("testURLFactoryInfo", testURLFactoryInfo),
-    ]
 }
