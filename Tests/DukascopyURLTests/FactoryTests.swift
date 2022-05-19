@@ -110,10 +110,10 @@ final class FactoryTests: XCTestCase {
     }
 
     func testURLFactoryInfo() {
-        let factory = URLRequestFactory()
-        let request = factory.infoRequest()
+        let factory =  URLFactory()
+        let headers = factory.instruments().headers
 
-        XCTAssertNotNil(request.value(forHTTPHeaderField: "Authority"))
-        XCTAssertNotNil(request.value(forHTTPHeaderField: "Referer"))
+        XCTAssertNotNil( headers["Authority"] )
+        XCTAssertNotNil( headers["Referer"] )
     }
 }

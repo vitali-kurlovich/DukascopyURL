@@ -11,7 +11,7 @@ import Foundation
     import FoundationNetworking
 #endif
 
-public
+@available(*, deprecated, message: "Use URLFactory")public
 struct URLRequestFactory {
     public let urlFactory: URLFactory
 
