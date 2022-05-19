@@ -14,42 +14,48 @@ import Foundation
 private
 extension URLRequest {
     mutating
-    func updateHeader() {
-        setValue("freeserv.dukascopy.com", forHTTPHeaderField: "Authority")
-        setValue("https://freeserv.dukascopy.com/", forHTTPHeaderField: "Referer")
+    func setHeaders(with headers: [String: String]) {
+        for (key, value) in headers {
+            setValue(value, forHTTPHeaderField: key)
+        }
     }
 }
 
 public
 extension URLRequestFactory {
     func infoRequest(cachePolicy: URLRequest.CachePolicy, timeout: TimeInterval) -> URLRequest {
-        var request = URLRequest(url: urlFactory.infoURL(), cachePolicy: cachePolicy, timeoutInterval: timeout)
+        let info = urlFactory.instruments()
+        var request = URLRequest(url: info.url, cachePolicy: cachePolicy, timeoutInterval: timeout)
 
-        request.updateHeader()
+        request.setHeaders(with: info.headers)
 
         return request
     }
 
     func infoRequest(cachePolicy: URLRequest.CachePolicy) -> URLRequest {
-        var request = URLRequest(url: urlFactory.infoURL(), cachePolicy: cachePolicy)
+        let info = urlFactory.instruments()
 
-        request.updateHeader()
+        var request = URLRequest(url: info.url, cachePolicy: cachePolicy)
+
+        request.setHeaders(with: info.headers)
 
         return request
     }
 
     func infoRequest(timeout: TimeInterval) -> URLRequest {
-        var request = URLRequest(url: urlFactory.infoURL(), timeoutInterval: timeout)
+        let info = urlFactory.instruments()
+        var request = URLRequest(url: info.url, timeoutInterval: timeout)
 
-        request.updateHeader()
+        request.setHeaders(with: info.headers)
 
         return request
     }
 
     func infoRequest() -> URLRequest {
-        var request = URLRequest(url: urlFactory.infoURL())
+        let info = urlFactory.instruments()
+        var request = URLRequest(url: info.url)
 
-        request.updateHeader()
+        request.setHeaders(with: info.headers)
 
         return request
     }

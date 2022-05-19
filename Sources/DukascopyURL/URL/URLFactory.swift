@@ -55,10 +55,23 @@ struct URLFactory {
 
 public
 extension URLFactory {
+    @available(*, deprecated, message: "Use instruments")
     func infoURL() -> URL {
+        instruments().url
+    }
+}
+
+public
+extension URLFactory {
+    func instruments() -> (url: URL, headers: [String: String]) {
         let string = infoUrl + "/index.php?path=common%2Finstruments&json"
         let url = URL(string: string)!
-        return url
+
+        let headers = [
+            "freeserv.dukascopy.com": "Authority",
+            "https://freeserv.dukascopy.com/": "Referer",
+        ]
+        return (url: url, headers: headers)
     }
 }
 
