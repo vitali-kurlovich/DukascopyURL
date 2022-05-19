@@ -15,7 +15,7 @@ private
 extension URLRequest {
     mutating
     func setHeaders(with headers: [String: String]) {
-        for (key, value) in headers {
+        headers.forEach { (key: String, value: String) in
             setValue(value, forHTTPHeaderField: key)
         }
     }

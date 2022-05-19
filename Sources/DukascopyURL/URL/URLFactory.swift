@@ -68,8 +68,8 @@ extension URLFactory {
         let url = URL(string: string)!
 
         let headers = [
-            "freeserv.dukascopy.com": "Authority",
-            "https://freeserv.dukascopy.com/": "Referer",
+            "Authority": "freeserv.dukascopy.com",
+            "Referer": "https://freeserv.dukascopy.com/",
         ]
         return (url: url, headers: headers)
     }
