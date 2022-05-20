@@ -1,7 +1,4 @@
 //
-//  DukascopyURLFactory.swift
-//  Chart
-//
 //  Created by Vitali Kurlovich on 4/4/20.
 //  Copyright © 2020 Vitali Kurlovich. All rights reserved.
 //
@@ -11,22 +8,6 @@ import Foundation
 /*
  https://datafeed.dukascopy.com/datafeed/ACFREUR/2020/03/05/BID_candles_min_1.bi5
  https://datafeed.dukascopy.com/datafeed/ACFREUR/2020/03/18/09h_ticks.bi5
- */
-
-/*
-
- func infoRequest() -> URLRequest {
-     let base = "https://freeserv.dukascopy.com/2.0/index.php?path=common%2Finstruments&json"
-     let url = URL(string: base)!
-
-     var request = URLRequest(url: url, cachePolicy: cachePolicy, timeoutInterval: timeout)
-
-     request.setValue("freeserv.dukascopy.com", forHTTPHeaderField: "Authority")
-     request.setValue("https://freeserv.dukascopy.com/", forHTTPHeaderField: "Referer")
-
-     return request
- }
-
  */
 
 public
