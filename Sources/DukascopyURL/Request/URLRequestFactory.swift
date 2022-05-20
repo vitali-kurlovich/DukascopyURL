@@ -11,7 +11,7 @@ import Foundation
     import FoundationNetworking
 #endif
 
-@available(*, deprecated, message: "Use URLFactory")public
+@available(*, deprecated, message: "Use URLFactory") public
 struct URLRequestFactory {
     public let urlFactory: URLFactory
 
@@ -66,25 +66,25 @@ extension URLRequestFactory {
 public
 extension URLRequestFactory {
     func request(cachePolicy: URLRequest.CachePolicy, timeout: TimeInterval, format: Format, for currency: String, year: Int, month: Int, day: Int, hour: Int) throws -> URLRequest {
-        let url = try urlFactory.url(format: format, for: currency, year: year, month: month, day: day, hour: hour)
+        let url = try urlFactory.url(format: format, for: currency, year: year, month: month, day: day, hour: hour).url
 
         return URLRequest(url: url, cachePolicy: cachePolicy, timeoutInterval: timeout)
     }
 
     func request(cachePolicy: URLRequest.CachePolicy, format: Format, for currency: String, year: Int, month: Int, day: Int, hour: Int) throws -> URLRequest {
-        let url = try urlFactory.url(format: format, for: currency, year: year, month: month, day: day, hour: hour)
+        let url = try urlFactory.url(format: format, for: currency, year: year, month: month, day: day, hour: hour).url
 
         return URLRequest(url: url, cachePolicy: cachePolicy)
     }
 
     func request(timeout: TimeInterval, format: Format, for currency: String, year: Int, month: Int, day: Int, hour: Int) throws -> URLRequest {
-        let url = try urlFactory.url(format: format, for: currency, year: year, month: month, day: day, hour: hour)
+        let url = try urlFactory.url(format: format, for: currency, year: year, month: month, day: day, hour: hour).url
 
         return URLRequest(url: url, timeoutInterval: timeout)
     }
 
     func request(format: Format, for currency: String, year: Int, month: Int, day: Int, hour: Int) throws -> URLRequest {
-        let url = try urlFactory.url(format: format, for: currency, year: year, month: month, day: day, hour: hour)
+        let url = try urlFactory.url(format: format, for: currency, year: year, month: month, day: day, hour: hour).url
 
         return URLRequest(url: url)
     }

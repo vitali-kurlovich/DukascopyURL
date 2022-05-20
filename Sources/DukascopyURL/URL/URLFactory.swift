@@ -142,10 +142,10 @@ public extension URLFactory {
     func url(format: Format, for currency: String, date: Date) throws -> URL {
         let comps = calendar.dateComponents([.year, .month, .day, .hour], from: date)
 
-        return try url(format: format, for: currency, year: comps.year!, month: comps.month!, day: comps.day!, hour: comps.hour!)
+        return try url(format: format, for: currency, year: comps.year!, month: comps.month!, day: comps.day!, hour: comps.hour!).url
     }
 
-    func url(format: Format, for currency: String, year: Int, month: Int, day: Int, hour: Int = 0) throws -> URL {
+    func url(format: Format, for currency: String, year: Int, month: Int, day: Int, hour: Int = 0) throws -> (url: URL, range: Range<Date>) {
         guard (1 ... 12).contains(month) else {
             throw FactoryError.invalidMonth
         }
@@ -169,11 +169,24 @@ public extension URLFactory {
         comps.day = day
         comps.month = month
 
+        let url: URL
+
+        let lowerDate: Date
+        let upperDate: Date
+
         switch format {
         case .ticks:
             let format = "\(baseUrl)/\(currency)/%d/%02d/%02d/%02dh_ticks.bi5"
             let baseUrl = String(format: format, year, month - 1, day, hour)
-            return URL(string: baseUrl)!
+            url = URL(string: baseUrl)!
+
+            comps.hour = hour
+
+            lowerDate = calendar.date(from: comps)!
+
+            let hour = DateComponents(hour: 1)
+            upperDate = calendar.date(byAdding: hour, to: lowerDate)!
+
         case let .candles(type):
             let format: String
             switch type {
@@ -184,8 +197,15 @@ public extension URLFactory {
             }
 
             let baseUrl = String(format: format, year, month - 1, day)
-            return URL(string: baseUrl)!
+            url = URL(string: baseUrl)!
+
+            lowerDate = calendar.date(from: comps)!
+
+            let day = DateComponents(day: 1)
+            upperDate = calendar.date(byAdding: day, to: lowerDate)!
         }
+
+        return (url: url, range: lowerDate ..< upperDate)
     }
 }
 
