@@ -139,7 +139,7 @@ public extension URLFactory {
         return urls
     }
 
-    func url(format: Format, for currency: String, date: Date) throws -> URL {
+    func url(format: Format, for currency: String, date: Date) throws ->  URL {
         let comps = calendar.dateComponents([.year, .month, .day, .hour], from: date)
 
         return try url(format: format, for: currency, year: comps.year!, month: comps.month!, day: comps.day!, hour: comps.hour!).url
