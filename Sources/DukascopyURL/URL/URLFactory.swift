@@ -75,8 +75,19 @@ extension URLFactory {
     }
 }
 
-public extension URLFactory {
-    func url(format: Format, for currency: String, range: Range<Date>) throws -> [(url: URL, range: Range<Date>)] {
+public
+
+extension URLFactory {
+    func quotes(format: Format, for currency: String, date: Date) throws -> (url: URL, range: Range<Date>) {
+        let comps = calendar.dateComponents([.year, .month, .day, .hour], from: date)
+
+        return try quotes(format: format, for: currency, year: comps.year!, month: comps.month!, day: comps.day!, hour: comps.hour!)
+    }
+}
+
+public
+extension URLFactory {
+    func quotes(format: Format, for currency: String, range: Range<Date>) throws -> [(url: URL, range: Range<Date>)] {
         guard !currency.isEmpty else {
             throw FactoryError.invalidCurrency
         }
@@ -96,20 +107,12 @@ public extension URLFactory {
 
         switch format {
         case .ticks:
-            if let url = try? url(format: format, for: currency, date: current) {
-                let hour = DateComponents(hour: 1)
-                let next = calendar.date(byAdding: hour, to: current)!
+            let quotes = try quotes(format: format, for: currency, date: current)
+            urls.append(quotes)
 
-                urls.append((url: url, range: current ..< next))
-            }
         case .candles:
-
-            if let url = try? url(format: format, for: currency, date: current) {
-                let day = DateComponents(day: 1)
-                let next = calendar.date(byAdding: day, to: current)!
-
-                urls.append((url: url, range: current ..< next))
-            }
+            let quotes = try quotes(format: format, for: currency, date: current)
+            urls.append(quotes)
         }
 
         switch format {
@@ -118,34 +121,26 @@ public extension URLFactory {
             while let next = calendar.date(byAdding: hour, to: current), next < upper {
                 current = next
 
-                if let url = try? url(format: format, for: currency, date: current) {
-                    let hour = DateComponents(hour: 1)
-                    let next = calendar.date(byAdding: hour, to: current)!
-                    urls.append((url: url, range: current ..< next))
-                }
+                let quotes = try quotes(format: format, for: currency, date: current)
+                urls.append(quotes)
             }
         case .candles:
             let day = DateComponents(day: 1)
             while let next = calendar.date(byAdding: day, to: current), next < upper {
                 current = next
 
-                if let url = try? url(format: format, for: currency, date: current) {
-                    let next = calendar.date(byAdding: day, to: current)!
-                    urls.append((url: url, range: current ..< next))
-                }
+                let quotes = try quotes(format: format, for: currency, date: current)
+                urls.append(quotes)
             }
         }
 
         return urls
     }
+}
 
-    func url(format: Format, for currency: String, date: Date) throws ->  URL {
-        let comps = calendar.dateComponents([.year, .month, .day, .hour], from: date)
-
-        return try url(format: format, for: currency, year: comps.year!, month: comps.month!, day: comps.day!, hour: comps.hour!).url
-    }
-
-    func url(format: Format, for currency: String, year: Int, month: Int, day: Int, hour: Int = 0) throws -> (url: URL, range: Range<Date>) {
+private
+extension URLFactory {
+    func quotes(format: Format, for currency: String, year: Int, month: Int, day: Int, hour: Int = 0) throws -> (url: URL, range: Range<Date>) {
         guard (1 ... 12).contains(month) else {
             throw FactoryError.invalidMonth
         }
@@ -206,6 +201,25 @@ public extension URLFactory {
         }
 
         return (url: url, range: lowerDate ..< upperDate)
+    }
+}
+
+public extension URLFactory {
+    @available(*, deprecated, message: "Use quotes")
+    func url(format: Format, for currency: String, range: Range<Date>) throws -> [(url: URL, range: Range<Date>)] {
+        return try quotes(format: format, for: currency, range: range)
+    }
+
+    @available(*, deprecated, message: "Use quotes")
+    func url(format: Format, for currency: String, date: Date) throws -> URL {
+        let comps = calendar.dateComponents([.year, .month, .day, .hour], from: date)
+
+        return try url(format: format, for: currency, year: comps.year!, month: comps.month!, day: comps.day!, hour: comps.hour!)
+    }
+
+    @available(*, deprecated, message: "Use quotes")
+    func url(format: Format, for currency: String, year: Int, month: Int, day: Int, hour: Int = 0) throws -> URL {
+        return try quotes(format: format, for: currency, year: year, month: month, day: day, hour: hour).url
     }
 }
 
