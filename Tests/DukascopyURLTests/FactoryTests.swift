@@ -67,48 +67,6 @@ final class FactoryTests: XCTestCase {
         XCTAssertTrue(urls[2].url.absoluteString.hasSuffix("EURUSD/2019/03/04/ASK_candles_min_1.bi5"))
     }
 
-    func testURLFactoryErrors() {
-        let factory = URLFactory()
-        typealias FactoryError = URLFactory.FactoryError
-
-        XCTAssertThrowsError(try factory.url(format: .ticks, for: "EURUSD", year: 2000, month: 13, day: 1, hour: 1)) { error in
-            XCTAssertEqual(error as! URLFactory.FactoryError, FactoryError.invalidMonth)
-        }
-
-        XCTAssertThrowsError(try factory.url(format: .ticks, for: "EURUSD", year: 2000, month: 0, day: 1, hour: 1)) { error in
-            XCTAssertEqual(error as! URLFactory.FactoryError, FactoryError.invalidMonth)
-        }
-
-        XCTAssertThrowsError(try factory.url(format: .ticks, for: "EURUSD", year: 2000, month: 10, day: 0, hour: 1)) { error in
-            XCTAssertEqual(error as! URLFactory.FactoryError, FactoryError.invalidDay)
-        }
-
-        XCTAssertThrowsError(try factory.url(format: .ticks, for: "EURUSD", year: 2000, month: 10, day: 32, hour: 1)) { error in
-            XCTAssertEqual(error as! URLFactory.FactoryError, FactoryError.invalidDay)
-        }
-
-        XCTAssertThrowsError(try factory.url(format: .ticks, for: "EURUSD", year: 2000, month: 10, day: 5, hour: -1)) { error in
-            XCTAssertEqual(error as! URLFactory.FactoryError, FactoryError.invalidHour)
-        }
-
-        XCTAssertThrowsError(try factory.url(format: .ticks, for: "EURUSD", year: 2000, month: 10, day: 5, hour: 24)) { error in
-            XCTAssertEqual(error as! URLFactory.FactoryError, FactoryError.invalidHour)
-        }
-
-        XCTAssertThrowsError(try factory.url(format: .ticks, for: "", year: 2000, month: 10, day: 5, hour: 12)) { error in
-            XCTAssertEqual(error as! URLFactory.FactoryError, FactoryError.invalidCurrency)
-        }
-
-        let begin = formatter.date(from: "02-04-2019 11:00")!
-        let end = formatter.date(from: "02-04-2019 14:00")!
-
-        let range = begin ..< end
-
-        XCTAssertThrowsError(try factory.url(format: .ticks, for: "", range: range)) { error in
-            XCTAssertEqual(error as! URLFactory.FactoryError, FactoryError.invalidCurrency)
-        }
-    }
-
     func testURLFactoryInfo() {
         let factory = URLFactory()
         let headers = factory.instruments().headers
