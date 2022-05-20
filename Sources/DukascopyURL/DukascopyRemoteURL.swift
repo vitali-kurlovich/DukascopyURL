@@ -30,9 +30,16 @@ import Foundation
  */
 
 public
-struct URLFactory {
-    public typealias PriceType = DukascopyPriceType
-    public typealias Format = DukascopyFormat
+struct DukascopyRemoteURL {
+    public enum PriceType {
+        case ask
+        case bid
+    }
+
+    public enum Format {
+        case ticks
+        case candles(PriceType)
+    }
 
     public
     enum FactoryError: Error {
@@ -50,15 +57,7 @@ struct URLFactory {
 }
 
 public
-extension URLFactory {
-    @available(*, deprecated, message: "Use instruments")
-    func infoURL() -> URL {
-        instruments().url
-    }
-}
-
-public
-extension URLFactory {
+extension DukascopyRemoteURL {
     func instruments() -> (url: URL, headers: [String: String]) {
         let string = infoUrl + "/index.php?path=common%2Finstruments&json"
         let url = URL(string: string)!
@@ -72,7 +71,7 @@ extension URLFactory {
 }
 
 public
-extension URLFactory {
+extension DukascopyRemoteURL {
     func quotes(format: Format, for currency: String, date: Date) -> (url: URL, range: Range<Date>) {
         let comps = calendar.dateComponents([.year, .month, .day, .hour], from: date)
 
@@ -81,7 +80,7 @@ extension URLFactory {
 }
 
 public
-extension URLFactory {
+extension DukascopyRemoteURL {
     func quotes(format: Format, for currency: String, range: Range<Date>) -> [(url: URL, range: Range<Date>)] {
         precondition(!currency.isEmpty, "currency can't be empty")
 
@@ -129,7 +128,7 @@ extension URLFactory {
 }
 
 private
-extension URLFactory {
+extension DukascopyRemoteURL {
     func quotes(format: Format, for currency: String, year: Int, month: Int, day: Int, hour: Int = 0) -> (url: URL, range: Range<Date>) {
         let currency = currency.uppercased()
 
@@ -175,25 +174,6 @@ extension URLFactory {
         }
 
         return (url: url, range: lowerDate ..< upperDate)
-    }
-}
-
-public extension URLFactory {
-    @available(*, deprecated, message: "Use quotes")
-    func url(format: Format, for currency: String, range: Range<Date>) throws -> [(url: URL, range: Range<Date>)] {
-        return quotes(format: format, for: currency, range: range)
-    }
-
-    @available(*, deprecated, message: "Use quotes")
-    func url(format: Format, for currency: String, date: Date) throws -> URL {
-        let comps = calendar.dateComponents([.year, .month, .day, .hour], from: date)
-
-        return try url(format: format, for: currency, year: comps.year!, month: comps.month!, day: comps.day!, hour: comps.hour!)
-    }
-
-    @available(*, deprecated, message: "Use quotes")
-    func url(format: Format, for currency: String, year: Int, month: Int, day: Int, hour: Int = 0) throws -> URL {
-        return quotes(format: format, for: currency, year: year, month: month, day: day, hour: hour).url
     }
 }
 
