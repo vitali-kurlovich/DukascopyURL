@@ -26,7 +26,12 @@ final class DukascopyRemoteURLTests: XCTestCase {
         let factory = DukascopyRemoteURL()
 
         let date = formatter.date(from: "02-04-2019 11:00")!
-        let url = factory.quotes(format: .ticks, for: "EURUSD", date: date).url
+        let quote = factory.quotes(format: .ticks, for: "EURUSD", date: date)
+
+        let url = quote.url
+
+        XCTAssertEqual(quote.file, "11h_ticks.bi5")
+        XCTAssertEqual(quote.dir, "EURUSD/2019/03/02/")
 
         XCTAssertTrue(url.absoluteString.hasSuffix("EURUSD/2019/03/02/11h_ticks.bi5"))
 
@@ -50,7 +55,12 @@ final class DukascopyRemoteURLTests: XCTestCase {
         let factory = DukascopyRemoteURL()
 
         let date = formatter.date(from: "02-04-2019 11:00")!
-        let url = factory.quotes(format: .candles(.bid), for: "EURUSD", date: date).url
+        let quote = factory.quotes(format: .candles(.bid), for: "EURUSD", date: date)
+
+        let url = quote.url
+
+        XCTAssertEqual(quote.file, "BID_candles_min_1.bi5")
+        XCTAssertEqual(quote.dir, "EURUSD/2019/03/02/")
 
         XCTAssertTrue(url.absoluteString.hasSuffix("EURUSD/2019/03/02/BID_candles_min_1.bi5"))
 
